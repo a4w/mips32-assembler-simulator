@@ -99,7 +99,7 @@ class IDE extends JFrame{
                     }
                     Assembler assembler = new Assembler();
                 try {
-                    assembler.writeMachineCodeToFile("test.com", code_tArea.getText());
+                    assembler.writeMachineCodeToFile(fileName + ".o", code_tArea.getText());
                     JOptionPane.showMessageDialog(IDE.this, "Compiled Successfully");
                 } catch (Exception e) {
                     e.printStackTrace();

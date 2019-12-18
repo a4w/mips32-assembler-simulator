@@ -151,7 +151,32 @@ class Simulator extends JFrame{
         getRegister(n);
         ValueView vv = registerContents.get(n);
         vv.value = val;
-        vv.view.setText("R" + n + ": " + val);
+        String name = "";
+        if(n == 0)
+            name = "$0";
+        else if(n == 1)
+            name = "$at";
+        else if(n <= 3)
+            name = "$v" + String.valueOf(n - 2);
+        else if(n <= 7)
+            name = "$a" + String.valueOf(n - 4);
+        else if(n <= 15)
+            name = "$t" + String.valueOf(n - 8);
+        else if(n <= 23)
+            name = "$s" + String.valueOf(n - 16);
+        else if(n <= 25)
+            name = "$t" + String.valueOf(n - 24);
+        else if(n <= 27)
+            name = "$k" + String.valueOf(n - 26);
+        else if(n == 28)
+            name = "$gp";
+        else if(n == 29)
+            name = "$sp";
+        else if(n == 30)
+            name = "$fp";
+        else if(n == 31)
+            name = "$ra";
+        vv.view.setText(name + ": " + val);
     }
 
     int getRegister(int n){
@@ -246,7 +271,7 @@ class Simulator extends JFrame{
             case "100011":{ // LW
                 IInstruction instruction = decodeI(code);
                 int srcMemAdd = getRegister(instruction.r1);
-                int srcMem = getMemory(srcMemAdd + instruction.immediate);
+                int srcMem = getMemory(srcMemAdd + instruction.immediate + 8);
                 updateRegister(instruction.r2, srcMem);
                 break;
             }
@@ -254,7 +279,7 @@ class Simulator extends JFrame{
                 IInstruction instruction = decodeI(code);
                 int dstMemAdd = getRegister(instruction.r1);
                 int srcReg = getRegister(instruction.r2);
-                updateMemory(dstMemAdd + instruction.immediate, srcReg);
+                updateMemory(dstMemAdd + instruction.immediate + 8, srcReg);
                 break;
             }
             case "001000":{ // ADDi
